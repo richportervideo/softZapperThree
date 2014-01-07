@@ -571,6 +571,7 @@
 -(void)verticalHeight:(NSString *)panelRes{
     
     _hasProjectorBeenChecked = 1;
+    [_zapOutlet setEnabled:YES];
     if ([panelRes isEqualToString:@"1200"]) {
         [_checkedLabel setTextColor:[NSColor greenColor]];
         [_checkedLabel setStringValue:@"WUXGA"];
