@@ -7,9 +7,17 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "SColourComboDS.h"
 
-@interface SingleProjectorWindowController : NSWindowController
+@interface SingleProjectorWindowController : NSWindowController{
+    SColourComboDS *SCCDataSource;
+}
+
+@property (weak) IBOutlet NSTextField *ipAddressTextBox;
+@property (weak) IBOutlet NSComboBox *gridComboBox;
+@property (weak) IBOutlet NSComboBox *colourComboBox;
 
 - (IBAction)closeAction:(id)sender;
+
 
 @end

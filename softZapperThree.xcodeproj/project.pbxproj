@@ -22,6 +22,7 @@
 		9BA9C056187C06A80064F0B0 /* SingleProjectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C055187C06A80064F0B0 /* SingleProjectorWindowController.m */; };
 		9BA9C058187C0B9F0064F0B0 /* multiProjector.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */; };
 		9BA9C05B187C0BB40064F0B0 /* MultiProjectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */; };
+		9BA9C061187C2CB80064F0B0 /* SColourComboDS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C060187C2CB80064F0B0 /* SColourComboDS.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,8 @@
 		9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = multiProjector.xib; sourceTree = "<group>"; };
 		9BA9C059187C0BB40064F0B0 /* MultiProjectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiProjectorWindowController.h; sourceTree = "<group>"; };
 		9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiProjectorWindowController.m; sourceTree = "<group>"; };
+		9BA9C05F187C2CB80064F0B0 /* SColourComboDS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SColourComboDS.h; sourceTree = "<group>"; };
+		9BA9C060187C2CB80064F0B0 /* SColourComboDS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SColourComboDS.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +137,8 @@
 				9BA9C052187C066E0064F0B0 /* singleProjector.xib */,
 				9BA9C054187C06A80064F0B0 /* SingleProjectorWindowController.h */,
 				9BA9C055187C06A80064F0B0 /* SingleProjectorWindowController.m */,
+				9BA9C05F187C2CB80064F0B0 /* SColourComboDS.h */,
+				9BA9C060187C2CB80064F0B0 /* SColourComboDS.m */,
 				9B8D400E187BFF4F00F16964 /* Images.xcassets */,
 				9B8D3FFD187BFF4F00F16964 /* Supporting Files */,
 			);
@@ -272,6 +277,7 @@
 			files = (
 				9BA9C05B187C0BB40064F0B0 /* MultiProjectorWindowController.m in Sources */,
 				9BA9C056187C06A80064F0B0 /* SingleProjectorWindowController.m in Sources */,
+				9BA9C061187C2CB80064F0B0 /* SColourComboDS.m in Sources */,
 				9B8D400A187BFF4F00F16964 /* AppDelegate.m in Sources */,
 				9B8D4003187BFF4F00F16964 /* main.m in Sources */,
 			);

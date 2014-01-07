@@ -10,10 +10,12 @@
 @class SingleProjectorWindowController;
 @class MultiProjectorWindowController;
 
+
 @interface AppDelegate : NSObject <NSApplicationDelegate> {
     SingleProjectorWindowController *spWindowController;
     MultiProjectorWindowController *mpWindowController;
     
+
 }
 
 
