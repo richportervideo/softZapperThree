@@ -7,9 +7,21 @@
 //
 
 #import <Cocoa/Cocoa.h>
+@class SingleProjectorWindowController;
+@class MultiProjectorWindowController;
 
-@interface AppDelegate : NSObject <NSApplicationDelegate>
+@interface AppDelegate : NSObject <NSApplicationDelegate> {
+    SingleProjectorWindowController *spWindowController;
+    MultiProjectorWindowController *mpWindowController;
+    
+}
+
 
 @property (assign) IBOutlet NSWindow *window;
+
+- (IBAction)SingleProjectorAction:(id)sender;
+
+- (IBAction)multiProjectorAction:(id)sender;
+
 
 @end

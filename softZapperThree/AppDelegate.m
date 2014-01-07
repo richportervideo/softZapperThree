@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import "SingleProjectorWindowController.h"
+#import "MultiProjectorWindowController.h"
 
 @implementation AppDelegate
 
@@ -15,4 +17,19 @@
     // Insert code here to initialize your application
 }
 
+- (IBAction)SingleProjectorAction:(id)sender {
+    
+    if (!spWindowController){
+        spWindowController = [[SingleProjectorWindowController alloc]initWithWindowNibName:@"singleProjector"];
+    }
+    [spWindowController showWindow:self];
+}
+
+- (IBAction)multiProjectorAction:(id)sender {
+    if (! mpWindowController) {
+        mpWindowController = [[MultiProjectorWindowController alloc]initWithWindowNibName:@"multiProjector"];
+    }
+    [mpWindowController showWindow:self];
+    
+}
 @end

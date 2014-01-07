@@ -18,6 +18,10 @@
 		9B8D4017187BFF4F00F16964 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B8D3FF6187BFF4F00F16964 /* Cocoa.framework */; };
 		9B8D401F187BFF4F00F16964 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9B8D401D187BFF4F00F16964 /* InfoPlist.strings */; };
 		9B8D4021187BFF4F00F16964 /* softZapperThreeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B8D4020187BFF4F00F16964 /* softZapperThreeTests.m */; };
+		9BA9C053187C066E0064F0B0 /* singleProjector.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BA9C052187C066E0064F0B0 /* singleProjector.xib */; };
+		9BA9C056187C06A80064F0B0 /* SingleProjectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C055187C06A80064F0B0 /* SingleProjectorWindowController.m */; };
+		9BA9C058187C0B9F0064F0B0 /* multiProjector.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */; };
+		9BA9C05B187C0BB40064F0B0 /* MultiProjectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +54,12 @@
 		9B8D401C187BFF4F00F16964 /* softZapperThreeTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "softZapperThreeTests-Info.plist"; sourceTree = "<group>"; };
 		9B8D401E187BFF4F00F16964 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		9B8D4020187BFF4F00F16964 /* softZapperThreeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = softZapperThreeTests.m; sourceTree = "<group>"; };
+		9BA9C052187C066E0064F0B0 /* singleProjector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = singleProjector.xib; path = ../singleProjector.xib; sourceTree = "<group>"; };
+		9BA9C054187C06A80064F0B0 /* SingleProjectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleProjectorWindowController.h; sourceTree = "<group>"; };
+		9BA9C055187C06A80064F0B0 /* SingleProjectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleProjectorWindowController.m; sourceTree = "<group>"; };
+		9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = multiProjector.xib; sourceTree = "<group>"; };
+		9BA9C059187C0BB40064F0B0 /* MultiProjectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiProjectorWindowController.h; sourceTree = "<group>"; };
+		9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiProjectorWindowController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +128,12 @@
 				9B8D4008187BFF4F00F16964 /* AppDelegate.h */,
 				9B8D4009187BFF4F00F16964 /* AppDelegate.m */,
 				9B8D400B187BFF4F00F16964 /* MainMenu.xib */,
+				9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */,
+				9BA9C059187C0BB40064F0B0 /* MultiProjectorWindowController.h */,
+				9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */,
+				9BA9C052187C066E0064F0B0 /* singleProjector.xib */,
+				9BA9C054187C06A80064F0B0 /* SingleProjectorWindowController.h */,
+				9BA9C055187C06A80064F0B0 /* SingleProjectorWindowController.m */,
 				9B8D400E187BFF4F00F16964 /* Images.xcassets */,
 				9B8D3FFD187BFF4F00F16964 /* Supporting Files */,
 			);
@@ -230,7 +246,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BA9C058187C0B9F0064F0B0 /* multiProjector.xib in Resources */,
 				9B8D4001187BFF4F00F16964 /* InfoPlist.strings in Resources */,
+				9BA9C053187C066E0064F0B0 /* singleProjector.xib in Resources */,
 				9B8D400F187BFF4F00F16964 /* Images.xcassets in Resources */,
 				9B8D4007187BFF4F00F16964 /* Credits.rtf in Resources */,
 				9B8D400D187BFF4F00F16964 /* MainMenu.xib in Resources */,
@@ -252,6 +270,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BA9C05B187C0BB40064F0B0 /* MultiProjectorWindowController.m in Sources */,
+				9BA9C056187C06A80064F0B0 /* SingleProjectorWindowController.m in Sources */,
 				9B8D400A187BFF4F00F16964 /* AppDelegate.m in Sources */,
 				9B8D4003187BFF4F00F16964 /* main.m in Sources */,
 			);
@@ -464,6 +484,7 @@
 				9B8D4026187BFF4F00F16964 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B8D4027187BFF4F00F16964 /* Build configuration list for PBXNativeTarget "softZapperThreeTests" */ = {
 			isa = XCConfigurationList;
@@ -472,6 +493,7 @@
 				9B8D4029187BFF4F00F16964 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
