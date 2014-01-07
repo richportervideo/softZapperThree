@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>D8BCA671-E030-4644-A534-6A0D1755C19B</string>
+	<string>8543F37D-32BD-4FB6-8326-F7105357104A</string>
 	<key>IDESourceControlProjectName</key>
 	<string>softZapperThree</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>E04C45AD-8AE5-4802-B78E-6AE0A1F905E5</key>
-		<string>ssh://github.com/richportervideo/Crop-Calculator.git</string>
+		<key>5EB7729C-BE3B-420F-8D02-D77AEC73DED3</key>
+		<string>ssh://github.com/richportervideo/softZapperThree.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>softZapperThree.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>E04C45AD-8AE5-4802-B78E-6AE0A1F905E5</key>
+		<key>5EB7729C-BE3B-420F-8D02-D77AEC73DED3</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/richportervideo/Crop-Calculator.git</string>
+	<string>ssh://github.com/richportervideo/softZapperThree.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>E04C45AD-8AE5-4802-B78E-6AE0A1F905E5</string>
+	<string>5EB7729C-BE3B-420F-8D02-D77AEC73DED3</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>E04C45AD-8AE5-4802-B78E-6AE0A1F905E5</string>
+			<string>5EB7729C-BE3B-420F-8D02-D77AEC73DED3</string>
 			<key>IDESourceControlWCCName</key>
 			<string>softZapperThree</string>
 		</dict>
