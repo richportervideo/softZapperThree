@@ -10,6 +10,7 @@
 #import "SColourComboDS.h"
 
 @class SColourComboDS;
+@class SGridComboDS;
 
 @interface SingleProjectorWindowController ()
 
@@ -26,6 +27,7 @@
     double _delayInSeconds;
     NSArray *_projGrid;
     NSArray *_colours;
+    NSMutableArray *_availableProjectors;
 }
 
 - (id)initWithWindow:(NSWindow *)window
@@ -69,18 +71,48 @@
 
     
     SCCDataSource = [[SColourComboDS alloc]init];
+    SGCDataSource = [[SGridComboDS alloc]init];
     
-    //Set up col
+    //Set up colours array
     _colours = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Cyan", @"Magenta", @"Yellow",@"White", nil];
+    //Dummy Data to test _gridcombobox
+    _availableProjectors = [NSMutableArray arrayWithObjects:@"SXGA", @"HD", @"WUXGA", nil];
+    
     
     [SCCDataSource setColourItems:_colours];
+    [SGCDataSource setGridItems:_availableProjectors];
     
     [_colourComboBox setDataSource:SCCDataSource];
     [_colourComboBox setUsesDataSource:YES];
     [_colourComboBox selectItemAtIndex:0];
+    [_gridComboBox setDataSource:SGCDataSource];
+    [_gridComboBox setUsesDataSource:YES];
+    [_gridComboBox selectItemAtIndex:0];
+    
     
     
     }
+
+- (IBAction)checkProjectorAction:(id)sender {
+    
+    [self setTheIPAdress];
+    
+    [self initNetworkCommunication];
+    
+    [self sendThisMessage:@"(SST+CONF?5 0)"];
+}
+
+-(void)setTheIPAdress {
+    
+    if ((![_ipAddress isEqual: @""])){
+        NSLog(@"IP Address is set to %@", _ipAddress);
+    } else if(![[_ipAddressTextBox stringValue] isEqual: @""]){
+        _ipAddress = [_ipAddressTextBox stringValue];
+        NSLog(@"IP Address is set to %@", _ipAddress);
+    }
+    
+}
+
 
 // Choose Color Combo Box switch
 -(void)chooseColour{

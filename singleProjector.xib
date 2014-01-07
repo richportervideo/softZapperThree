@@ -7,6 +7,7 @@
         <customObject id="-2" userLabel="File's Owner" customClass="SingleProjectorWindowController">
             <connections>
                 <outlet property="colourComboBox" destination="mIh-Wl-ETv" id="p0f-kw-brZ"/>
+                <outlet property="gridComboBox" destination="wZs-Fi-3Ll" id="E41-zh-JA0"/>
                 <outlet property="ipAddressTextBox" destination="HAN-9G-5g8" id="E81-r7-CRd"/>
                 <outlet property="window" destination="1" id="sBu-cw-cfw"/>
             </connections>
@@ -70,9 +71,9 @@
                         </comboBoxCell>
                     </comboBox>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kWy-Ld-rsG">
-                        <rect key="frame" x="18" y="161" width="47" height="17"/>
+                        <rect key="frame" x="18" y="161" width="51" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Colour" id="mCV-wu-QmS">
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Colour:" id="mCV-wu-QmS">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
@@ -85,7 +86,28 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="checkProjectorAction:" target="-2" id="Br2-NU-0aZ"/>
+                        </connections>
                     </button>
+                    <comboBox verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wZs-Fi-3Ll">
+                        <rect key="frame" x="21" y="71" width="152" height="26"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" usesDataSource="YES" numberOfVisibleItems="5" id="kR2-Dc-6I4">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </comboBoxCell>
+                    </comboBox>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TZw-Gk-7ot">
+                        <rect key="frame" x="20" y="103" width="35" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Grid:" id="R8q-tN-Zz1">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
         </window>
