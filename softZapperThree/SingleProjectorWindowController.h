@@ -18,9 +18,13 @@
 @property (weak) IBOutlet NSTextField *ipAddressTextBox;
 @property (weak) IBOutlet NSComboBox *gridComboBox;
 @property (weak) IBOutlet NSComboBox *colourComboBox;
+@property (weak) IBOutlet NSTextField *checkedLabel;
+@property (weak) IBOutlet NSSegmentedControl *drawOnSegment;
+@property (weak) IBOutlet NSButton *zapOutlet;
 
 - (IBAction)closeAction:(id)sender;
 - (IBAction)checkProjectorAction:(id)sender;
+- (IBAction)zapAction:(id)sender;
 
 
 @end

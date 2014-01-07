@@ -8,6 +8,7 @@
 
 #import "SingleProjectorWindowController.h"
 #import "SColourComboDS.h"
+#import "SimplePingHelper.h"
 
 @class SColourComboDS;
 @class SGridComboDS;
@@ -22,9 +23,9 @@
     NSOutputStream *outputStream;
     NSString * _ipAddress;
     NSArray *_sxga_sxga, *_hd_sxga, *_hd_hd, *_wuxga_sxga, *_wuxga_hd, *_wuxga_wuxga;
-    NSString *R, *G, *B, *C, *Y, *M, *W, *_shadedRGB, *_chosenProjector, *_userRGB;
-    int _gridBoxesWide, _gridBoxesHigh, _centerLeft, _centerRight, _middleTop, _middleBottom, _gridsize, _delayBtwLines;
-    double _delayInSeconds;
+    NSString *R, *G, *B, *C, *Y, *M, *W, *_shadedRGB, *_chosenProjector, *_userRGB, *_pingReadout, *_drawCallFinished;
+    int _gridBoxesWide, _gridBoxesHigh, _centerLeft, _centerRight, _middleTop, _middleBottom, _gridsize, _delayBtwLines, _thePort, eveythingsOk, _hasProjectorBeenChecked;
+    double _delayInSeconds, _tinyDelay;
     NSArray *_projGrid;
     NSArray *_colours;
     NSMutableArray *_availableProjectors;
@@ -44,8 +45,10 @@
     [super windowDidLoad];
     
     //Set IP Manually for testing and laziness.
-    _ipAddress = @"192.168.20.2";
+    _ipAddress = @"192.168.15.6";
     [_ipAddressTextBox setStringValue: _ipAddress];
+    _thePort = 3002;
+    _hasProjectorBeenChecked = 0;
     
     //Colour Choices
     R = @" 255 0 0)";
@@ -70,13 +73,20 @@
     _wuxga_wuxga = [NSArray arrayWithObjects:[NSNumber numberWithInt:0], [NSNumber numberWithInt:0],[NSNumber numberWithInt:1919],[NSNumber numberWithInt:1199], [NSNumber numberWithInt:577], [NSNumber numberWithInt:897], [NSNumber numberWithInt:46], [NSNumber numberWithInt:126], [NSNumber numberWithInt:1919], [NSNumber numberWithInt:1199], [NSNumber numberWithInt:1920], [NSNumber numberWithInt:1200], nil];
 
     
+    _gridsize = 64;
+    _delayBtwLines = 50;
+    _delayInSeconds = 0.05f;
+    _tinyDelay = 0.01f;
+    
+    
     SCCDataSource = [[SColourComboDS alloc]init];
     SGCDataSource = [[SGridComboDS alloc]init];
     
     //Set up colours array
     _colours = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Cyan", @"Magenta", @"Yellow",@"White", nil];
     //Dummy Data to test _gridcombobox
-    _availableProjectors = [NSMutableArray arrayWithObjects:@"SXGA", @"HD", @"WUXGA", nil];
+    _availableProjectors = [NSMutableArray arrayWithObjects:@"Please check Projector", nil];
+    [_zapOutlet setEnabled:NO];
     
     
     [SCCDataSource setColourItems:_colours];
@@ -93,13 +103,53 @@
     
     }
 
+//Runs when the user presses ZAP!
+- (IBAction)zapAction:(id)sender {
+    
+    
+    //Get IP Address
+    
+    int ipselfcheck = [self checkIPAdress];
+    NSLog(@"ipselftest returned:%i", ipselfcheck);
+    
+    
+    NSLog(@"Port number is set to %d", _thePort);
+    
+    //Start the Network stream to the projector
+    
+    if (ipselfcheck == 1){
+        [self initNetworkCommunication];
+        if ([_drawOnSegment selectedSegment] == 0) {
+            [self sendThisMessage:@"(ITP5)"];
+            NSLog(@"Sent (ITP5) for draw on black");
+        }
+        [self sendThisMessage:@"(UTP0)"];
+        [self setupZap];
+        [self drawCall];
+        
+        
+        NSLog(@"ZAPCALL: drawCallFinished: %@", _drawCallFinished);
+    } else {
+        NSLog(@"IP Issues Dude...");
+    }
+}
+
+
+
+
+
 - (IBAction)checkProjectorAction:(id)sender {
     
     [self setTheIPAdress];
     
     [self initNetworkCommunication];
     
+    [_checkedLabel setStringValue:@"Checking"];
+    [_checkedLabel setTextColor:[NSColor orangeColor]];
+    
     [self sendThisMessage:@"(SST+CONF?5 0)"];
+    
+    
 }
 
 -(void)setTheIPAdress {
@@ -187,6 +237,203 @@
     [self close];
 }
 
+//Broke the setup calls off into their own method. Makes the zapAction method easier to read.
+-(void)setupZap{
+    
+    NSLog(@"");
+    NSLog(@"STARTING SETUP");
+    NSLog(@"=============================");
+    //Get the desired grid...
+    [self whatGrid];
+    NSLog(@"Chosen Projector is %@", _chosenProjector);
+    
+    //Set _gridBoxesWide
+    _gridBoxesWide = ([[_projGrid objectAtIndex:8]integerValue]/_gridsize + 1);
+    NSLog(@"_gridBoxesWide == %d", _gridBoxesWide);
+    
+    //Set _gridBoxesHigh
+    _gridBoxesHigh = ([[_projGrid objectAtIndex:9]integerValue]/(_gridsize + 1));
+    NSLog(@"_gridBoxesWide == %d", _gridBoxesHigh);
+    
+    //Set _centerLeft
+    _centerLeft = ([[_projGrid objectAtIndex:10]integerValue]/2);
+    NSLog(@"_centerLeft == %d", _centerLeft);
+    
+    //set _centerRight
+    _centerRight = _centerLeft +1;
+    NSLog(@"_centerRight == %d", _centerRight);
+    
+    //set _middleTop
+    _middleTop = ([[_projGrid objectAtIndex:11]integerValue]/2);
+    NSLog(@"_middleTop == %d", _middleTop);
+    
+    //Set grid colour
+    [self chooseColour];
+    
+    //set _middleBottom
+    _middleBottom = _middleTop +1;
+    NSLog(@"_middleBottom == %d", _middleBottom);
+    
+    NSLog(@"=============================");
+    
+}
+
+
+//Draws the grid yo!
+-(void) drawCall {
+    NSLog(@"Inititated Draw Call...");
+    NSLog(@"drawCallFinished:%@", _drawCallFinished);
+    NSDate *drawCallStart = [NSDate date];
+    
+    int i = 0;
+    while (i < [[_projGrid objectAtIndex:7] integerValue]){
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",([[_projGrid objectAtIndex:5] integerValue]+i)])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:5] integerValue]+i)])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:3] integerValue]])];
+        [self sendThisMessage:_shadedRGB];
+        //NSLog(@"Vertical Shading has executed %i times", i);
+        [NSThread sleepForTimeInterval:_tinyDelay];
+        i++;
+    }
+    i = 0;
+    while (i < [[_projGrid objectAtIndex:6]integerValue]){
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%ld",
+                               (long)
+                               ([[_projGrid objectAtIndex:0] integerValue])]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:4] integerValue]+i)])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:2] integerValue]])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:4] integerValue]+i)])];
+        [self sendThisMessage:_shadedRGB];
+        // NSLog(@"Horizontal Shading has executed %i times", i);
+        [NSThread sleepForTimeInterval:_tinyDelay];
+        i++;
+    }
+    i = 0;
+    
+    while (i < (_gridBoxesWide/2) ){
+        //vert lines from left edge to center
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:0] integerValue]+(i * _gridsize))]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage
+         
+         :([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:0] integerValue]+(i * _gridsize))]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:3] integerValue]])];
+        [self sendThisMessage:_userRGB];
+        //NSLog(@"VertLeft to Center Shading has executed %i times", i);
+        [NSThread sleepForTimeInterval:_delayInSeconds];
+        //vert lins from right edge to center
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:2] integerValue]-(i * _gridsize))]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:2] integerValue]-(i * _gridsize))]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:3] integerValue]])];
+        [self sendThisMessage:_userRGB];
+        
+        // NSLog(@"VertRight to Center Shading has executed %i times", i);
+        [NSThread sleepForTimeInterval:_delayInSeconds];
+        i++;
+    }
+    //Center 2 px VT
+    [self sendThisMessage:@"(UTP5 "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%d", _centerLeft]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%d", _centerLeft]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:3] integerValue]])];
+    [self sendThisMessage:_userRGB];
+    [NSThread sleepForTimeInterval:0.02f];
+    [self sendThisMessage:@"(UTP5 "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%d", _centerRight]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%d", _centerRight]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:3] integerValue]])];
+    [self sendThisMessage:_userRGB];
+    [NSThread sleepForTimeInterval:_delayInSeconds];
+    i = 0;
+    
+    while (i < ((_gridBoxesHigh/2)+1)) {
+        //Horizontal lines from top to middle
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%ld",(long)([[_projGrid objectAtIndex:0] integerValue])]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",[[_projGrid objectAtIndex:1] integerValue]+(i * _gridsize)])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%ld",(long)([[_projGrid objectAtIndex:2] integerValue])]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",[[_projGrid objectAtIndex:1] integerValue]+(i * _gridsize)])];
+        [self sendThisMessage:_userRGB];
+        [NSThread sleepForTimeInterval:_delayInSeconds];
+        //Horizontal lins from bottom to middle
+        [self sendThisMessage:@"(UTP5 "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%ld",(long)([[_projGrid objectAtIndex:0] integerValue])]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",[[_projGrid objectAtIndex:3] integerValue]-(i * _gridsize)])];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:[NSString stringWithFormat:@"%ld",(long)([[_projGrid objectAtIndex:2] integerValue])]];
+        [self sendThisMessage:@" "];
+        [self sendThisMessage:([NSString stringWithFormat:@"%d",[[_projGrid objectAtIndex:3] integerValue]-(i * _gridsize)])];
+        [self sendThisMessage:_userRGB];
+        [NSThread sleepForTimeInterval:0.02f];
+        i++;
+    }
+    //Center 2 px HZ
+    [self sendThisMessage:@"(UTP5 "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%ld", (long)([[_projGrid objectAtIndex:0] integerValue])]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%d", _middleTop ])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld", (long)[[_projGrid objectAtIndex:2] integerValue]])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%d", _middleTop ])];
+    [self sendThisMessage:_userRGB];
+    [NSThread sleepForTimeInterval:_delayInSeconds];
+    [self sendThisMessage:@"(UTP5 "];
+    [self sendThisMessage:[NSString stringWithFormat:@"%ld", (long)([[_projGrid objectAtIndex:0] integerValue])]];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%d", _middleBottom ])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%ld", (long)[[_projGrid objectAtIndex:2] integerValue]])];
+    [self sendThisMessage:@" "];
+    [self sendThisMessage:([NSString stringWithFormat:@"%d", _middleBottom ])];
+    [self sendThisMessage:_userRGB];
+    [NSThread sleepForTimeInterval:_delayInSeconds];
+    
+    NSDate *drawCallFinish = [NSDate date];
+    NSTimeInterval drawLength = [drawCallFinish timeIntervalSinceDate:drawCallStart];
+    NSLog(@"...drawcalls take %f seconds", drawLength);
+    
+    NSLog(@"Reached the end of the draw calls");
+    NSString* str = @"Done!";
+    _drawCallFinished = str;
+    
+    
+    [inputStream close];
+    [outputStream close];
+    [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    
+}
 
 - (void)sendThisMessage:(NSString*)message{
     
@@ -322,6 +569,136 @@
     
 }
 -(void)verticalHeight:(NSString *)panelRes{
-    NSLog(@"The vertical height is %@", panelRes);
+    
+    _hasProjectorBeenChecked = 1;
+    if ([panelRes isEqualToString:@"1200"]) {
+        [_checkedLabel setTextColor:[NSColor greenColor]];
+        [_checkedLabel setStringValue:@"WUXGA"];
+        _availableProjectors = [NSMutableArray arrayWithObjects:_wuxga_sxga,_wuxga_hd,_wuxga_wuxga, nil];
+    } else if ([panelRes isEqualToString:@"1080"]){
+        [_checkedLabel setTextColor:[NSColor greenColor]];
+        [_checkedLabel setStringValue:@"HD"];
+    } else if ([panelRes isEqualToString:@"1050"]){
+        [_checkedLabel setTextColor:[NSColor greenColor]];
+        [_checkedLabel setStringValue:@"SXGA"];
+    } else {
+        NSLog(@"Swing and a miss...");
+    }
+    
 }
+
+//Full IP Check method. Returns 1 if Happy 0 if Sad
+-(int) checkIPAdress {
+    
+    eveythingsOk = 1;
+    if (![_ipAddress  isEqual: @""]){
+        
+    } else {
+        eveythingsOk = 0;
+        NSLog(@"IP VALUE IS EMPTY");
+        /*UIAlertView *invalidIP = [[UIAlertView alloc]
+                                  initWithTitle:@"Invaild IP Adderess"
+                                  message:@"Please input a vaild IP Address"
+                                  delegate:nil
+                                  cancelButtonTitle:@"Continue"
+                                  otherButtonTitles:nil];
+        [invalidIP show]; */
+    }
+    
+    if ( [self validateUrl:_ipAddress] ==1){
+        
+        NSLog(@"IP Format Check Passed. Looks like a valid IP: xx.xx.xx.xx");
+    } else {
+        eveythingsOk = 0;
+        NSLog(@"WRONG FORMAT IP");
+        /*UIAlertView *invalidFormatIP = [[UIAlertView alloc]
+                                        initWithTitle:@"Invaild IP Adderess"
+                                        message:@"Please input IP with format xx.xx.xx.xx"
+                                        delegate:nil
+                                        cancelButtonTitle:@"Continue"
+                                        otherButtonTitles:nil];
+        [invalidFormatIP show]; */
+        
+    }
+    
+    _pingReadout = nil;
+    [self tapPing:_ipAddress];
+    
+    while (_pingReadout == nil){
+        [[NSRunLoop currentRunLoop]runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+    
+    [self checkPingReadout];
+    
+    
+    return eveythingsOk;
+}
+
+// Checks to see if simple ping was a success. Opens UIAlerrt and Flags everythingsOK if ping fails
+-(void)checkPingReadout{
+    
+    if ([_pingReadout  isEqual: @"SUCCESS"]){
+        NSLog(@"Ping Success %@", _ipAddress);
+    } else if ([_pingReadout  isEqual: @"FAIL"]){
+        eveythingsOk = 0;
+        NSLog(@"Ping Fail %@", _ipAddress);
+        /*NSString *missingHost = [NSString stringWithFormat:@"Host not found at IP:%@", _ipAddress];
+        UIAlertView *missingHostAlert = [[UIAlertView alloc]
+                                         initWithTitle:@"Host Not Found"
+                                         message:missingHost
+                                         delegate:nil
+                                         cancelButtonTitle:@"Continue"
+                                         otherButtonTitles:nil];
+        [missingHostAlert show]; */
+        
+    }
+    
+    
+}
+
+
+// This method checks to see if the input ip address consists of 4 quads separated by dots.
+- (int) validateUrl: (NSString *) ipAddressStr{
+    NSString *ipValidStr = ipAddressStr;
+    NSString *ipRegEx =
+    @"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+    
+    NSPredicate *regExPredicate =[NSPredicate predicateWithFormat:@"SELF MATCHES %@", ipRegEx];
+    BOOL myStringMatchesRegEx = [regExPredicate evaluateWithObject:ipValidStr];
+    
+    //NSLog(@"myStringMatchesRegEx = %d ",myStringMatchesRegEx);
+    if (myStringMatchesRegEx){
+        return 1;
+    } else {
+        return 0;
+    }
+    
+}
+
+// Next 3 Methods part of PingHelper. Used to Ping the input IP before passing it to the initcommunications method.
+
+- (void)tapPing: (NSString*)testIP {
+    
+    [SimplePingHelper ping:testIP target:self sel:@selector(pingResult:)];
+}
+
+- (void)pingResult:(NSNumber*)success {
+    
+    if (success.boolValue) {
+        
+        [self log:@"SUCCESS"];
+    } else {
+        
+        [self log:@"FAIL"];
+    }
+}
+
+- (void)log:(NSString*)str {
+	//self.results.text = [NSString stringWithFormat:@"%@%@\n", self.results.text, str];
+	// NSLog(@"log: %@", str);
+    _pingReadout = str;
+    
+}
+
+
 @end
