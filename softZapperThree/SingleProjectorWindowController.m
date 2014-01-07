@@ -82,17 +82,214 @@
     
     }
 
-- (NSInteger)numberOfItemsInComboBox:(NSComboBox *)aComboBox{
-    return [_colours count];
+// Choose Color Combo Box switch
+-(void)chooseColour{
+    NSInteger theIndex = [_colourComboBox indexOfSelectedItem];
+    switch (theIndex) {
+        case 0:
+            _userRGB = R;
+            break;
+        case 1:
+            _userRGB = G;
+            break;
+        case 2:
+            _userRGB = B;
+            break;
+        case 3:
+            _userRGB = C;
+            break;
+        case 4:
+            _userRGB = M;
+            break;
+        case 5:
+            _userRGB = Y;
+            break;
+        case 6:
+            _userRGB = W;
+            break;
+        default:
+            _userRGB = R;
+            break;
+    }
+    
 }
 
-- (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(NSInteger)index{
-    return [_colours objectAtIndex:index];
+// Chose Grid Combo Box switch
+-(void)whatGrid{
+    NSInteger comboBoxIndex = [_gridComboBox indexOfSelectedItem];
+    NSLog(@"Combobox Index is %li", (long)comboBoxIndex);
+    switch (comboBoxIndex) {
+        case 0:
+            _projGrid = _sxga_sxga;
+            _chosenProjector = @"_sxga_sxga";
+            break;
+        case 1:
+            _projGrid = _hd_sxga;
+            _chosenProjector = @"_hd_sxga";
+            break;
+        case 2:
+            _projGrid = _hd_hd;
+            _chosenProjector = @"_hd_hd";
+            break;
+        case 3:
+            _projGrid = _wuxga_sxga;
+            _chosenProjector = @"_wuxga_sxga";
+            break;
+        case 4:
+            _projGrid = _wuxga_hd;
+            _chosenProjector = @"_wuxga_hd";
+            break;
+        case 5:
+            _projGrid = _wuxga_wuxga;
+            _chosenProjector = @"_wuxga_wuxga";
+            break;
+        default:
+            _projGrid = _sxga_sxga;
+            _chosenProjector = @"_sxga_sxga";
+            break;
+    }
 }
 
+//Close window
 - (IBAction)closeAction:(id)sender {
     [self close];
 }
 
 
+- (void)sendThisMessage:(NSString*)message{
+    
+    NSString *response  = [NSString stringWithFormat:@"%@", message ];
+	NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+	[outputStream write:[data bytes] maxLength:[data length]];
+    
+    // NSLog(@"%@ just written to ipAddress:%@", response, _ipAddress);
+    
+}
+
+- (void)initNetworkCommunication {
+    CFReadStreamRef readStream;
+    CFWriteStreamRef writeStream;
+    CFStreamCreatePairWithSocketToHost(NULL, CFBridgingRetain(_ipAddress), 3002, &readStream, &writeStream);
+    inputStream = (NSInputStream *)CFBridgingRelease(readStream);
+    outputStream = (NSOutputStream *)CFBridgingRelease(writeStream);
+    
+    [inputStream setDelegate:self];
+    [outputStream setDelegate:self];
+    
+    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    
+    [inputStream open];
+    [outputStream open];
+}
+#pragma mark NSStream delegate
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
+    
+	switch (streamEvent) {
+            
+		case NSStreamEventOpenCompleted:
+			NSLog(@"Stream opened");
+			break;
+            
+		case NSStreamEventHasBytesAvailable:
+            if (theStream == inputStream) {
+                
+                uint8_t buffer[4096];
+                int len;
+                
+                while ([inputStream hasBytesAvailable]) {
+                    len = [inputStream read:buffer maxLength:sizeof(buffer)];
+                    if (len > 0) {
+                        
+                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                        
+                        if (nil != output) {
+                            NSLog(@"server said: %@", output);
+                            [self messageRecieved:output];
+                        }
+                    }
+                }
+            }
+			break;
+            
+		case NSStreamEventErrorOccurred:
+			NSLog(@"Can not connect to the host!");
+			break;
+            
+		case NSStreamEventEndEncountered:
+			
+            [theStream close];
+            [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            
+            break;
+            
+		default:
+			NSLog(@"Unknown event");
+	}
+    
+}
+-(void) messageRecieved:(NSString *)message{
+    
+    long incomingLength = [message length];
+    
+    NSLog(@"Incoming length = %ld", incomingLength);
+    
+    if(message.length == 68){
+        NSLog(@"Thinking this is a HD18, Better have another check...");
+        [self sendThisMessage:@"(SST?0 3)"];
+    } else if(message.length == 57){
+        NSLog(@"Yeah, We've found a TIPM!");
+        [self looksLikeATIPM:message];
+    }else if(message.length == 71){
+        NSLog(@"Thinking this is a WU");
+        [self looksLikeAnM:message];
+    } else {
+        NSLog(@"Yeah We've got problems");
+    }
+    
+    
+}
+
+-(void)looksLikeATIPM:(NSString *)message {
+    
+    NSString *firstCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:32]];
+    NSString *secondCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:33]];
+    NSString *thirdCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:34]];
+    NSString *fourthCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:35]];
+    
+    NSMutableString *panelRes = [NSMutableString stringWithCapacity:4];
+    [panelRes appendString: firstCharacter];
+    [panelRes appendString: secondCharacter];
+    [panelRes appendString: thirdCharacter];
+    [panelRes appendString: fourthCharacter];
+    
+    //NSLog(@"Vertical Panel Resolutions %@", panelRes);
+    [self verticalHeight:panelRes];
+    
+    
+}
+
+
+-(void)looksLikeAnM:(NSString *)message{
+    
+    //NSLog(@"Looks like its an M Series.");
+    NSString *firstCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:32]];
+    NSString *secondCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:33]];
+    NSString *thirdCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:34]];
+    NSString *fourthCharacter = [NSString stringWithFormat:@"%c",[message characterAtIndex:35]];
+    
+    NSMutableString *panelRes = [NSMutableString stringWithCapacity:4];
+    [panelRes appendString: firstCharacter];
+    [panelRes appendString: secondCharacter];
+    [panelRes appendString: thirdCharacter];
+    [panelRes appendString: fourthCharacter];
+    
+    //NSLog(@"Vertical Panel Resolutions %@", panelRes);
+    [self verticalHeight:panelRes];
+    
+}
+-(void)verticalHeight:(NSString *)panelRes{
+    NSLog(@"The vertical height is %@", panelRes);
+}
 @end

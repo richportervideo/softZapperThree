@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "SColourComboDS.h"
 
-@interface SingleProjectorWindowController : NSWindowController{
+@interface SingleProjectorWindowController : NSWindowController <NSStreamDelegate>{
     SColourComboDS *SCCDataSource;
 }
 
