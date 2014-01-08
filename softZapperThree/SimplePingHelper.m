@@ -48,7 +48,7 @@
 
 - (void)go {
 	[self.simplePing start];
-	[self performSelector:@selector(endTime) withObject:nil afterDelay:1]; // This timeout is what retains the ping helper
+	[self performSelector:@selector(endTime) withObject:nil afterDelay:0.2]; // This timeout is what retains the ping helper
 }
 
 #pragma mark - Finishing and timing out

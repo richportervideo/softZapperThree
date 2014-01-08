@@ -22,8 +22,8 @@
     NSInputStream *inputStream;
     NSOutputStream *outputStream;
     NSString * _ipAddress;
-    NSArray *_sxga_sxga, *_hd_sxga, *_hd_hd, *_wuxga_sxga, *_wuxga_hd, *_wuxga_wuxga;
-    NSString *R, *G, *B, *C, *Y, *M, *W, *_shadedRGB, *_chosenProjector, *_userRGB, *_pingReadout, *_drawCallFinished;
+    NSArray *_sxga_sxga, *_hd_sxga, *_hd_hd, *_wuxga_sxga, *_wuxga_hd, *_wuxga_wuxga, *_wuxgaAvailable, *_hdAvailable, *_sxgaAvailable, *_nothingAvailable;
+    NSString *R, *G, *B, *C, *Y, *M, *W, *_shadedRGB, *_chosenProjector, *_userRGB, *_pingReadout, *_drawCallFinished, *_panelSize;
     int _gridBoxesWide, _gridBoxesHigh, _centerLeft, _centerRight, _middleTop, _middleBottom, _gridsize, _delayBtwLines, _thePort, eveythingsOk, _hasProjectorBeenChecked;
     double _delayInSeconds, _tinyDelay;
     NSArray *_projGrid;
@@ -45,7 +45,7 @@
     [super windowDidLoad];
     
     //Set IP Manually for testing and laziness.
-    _ipAddress = @"192.168.15.6";
+    _ipAddress = @"192.168.15.4";
     [_ipAddressTextBox setStringValue: _ipAddress];
     _thePort = 3002;
     _hasProjectorBeenChecked = 0;
@@ -59,6 +59,11 @@
     M = @" 255 0 255)";
     W = @" 255 255 255)";
     _shadedRGB = @" 64 64 64)";
+    
+    _nothingAvailable = [NSArray arrayWithObjects:@"Please Check projector", nil];
+    _wuxgaAvailable = [NSArray arrayWithObjects:@"SXGA", @"HD", @"WUXGA", nil];
+    _hdAvailable = [NSArray arrayWithObjects:@"SXGA", @"HD", nil];
+    _sxgaAvailable = [NSArray arrayWithObjects:@"SXGA", nil];
 
     //_serRGB - Set to red for testing purposes
     _userRGB = R;
@@ -85,7 +90,7 @@
     //Set up colours array
     _colours = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Cyan", @"Magenta", @"Yellow",@"White", nil];
     //Dummy Data to test _gridcombobox
-    _availableProjectors = [NSMutableArray arrayWithObjects:@"Please check Projector", nil];
+    _availableProjectors = [NSMutableArray arrayWithArray:_nothingAvailable];
     [_zapOutlet setEnabled:NO];
     
     
@@ -117,9 +122,8 @@
     
     //Start the Network stream to the projector
     
-    if (ipselfcheck == 1){
-        [self initNetworkCommunication];
-        if ([_drawOnSegment selectedSegment] == 0) {
+    [self initNetworkCommunication];
+    if ([_drawOnSegment selectedSegment] == 0) {
             [self sendThisMessage:@"(ITP5)"];
             NSLog(@"Sent (ITP5) for draw on black");
         }
@@ -129,9 +133,6 @@
         
         
         NSLog(@"ZAPCALL: drawCallFinished: %@", _drawCallFinished);
-    } else {
-        NSLog(@"IP Issues Dude...");
-    }
 }
 
 
@@ -140,12 +141,19 @@
 
 - (IBAction)checkProjectorAction:(id)sender {
     
+    [_checkOutlet setEnabled:NO];
+    
     [self setTheIPAdress];
     
     [self initNetworkCommunication];
     
+    _panelSize = nil;
+    
     [_checkedLabel setStringValue:@"Checking"];
     [_checkedLabel setTextColor:[NSColor orangeColor]];
+    
+    [self performSelectorOnMainThread:@selector(checkIPAdress) withObject:nil waitUntilDone:YES];
+    
     
     [self sendThisMessage:@"(SST+CONF?5 0)"];
     
@@ -200,38 +208,49 @@
 -(void)whatGrid{
     NSInteger comboBoxIndex = [_gridComboBox indexOfSelectedItem];
     NSLog(@"Combobox Index is %li", (long)comboBoxIndex);
-    switch (comboBoxIndex) {
-        case 0:
-            _projGrid = _sxga_sxga;
-            _chosenProjector = @"_sxga_sxga";
-            break;
-        case 1:
-            _projGrid = _hd_sxga;
-            _chosenProjector = @"_hd_sxga";
-            break;
-        case 2:
-            _projGrid = _hd_hd;
-            _chosenProjector = @"_hd_hd";
-            break;
-        case 3:
-            _projGrid = _wuxga_sxga;
-            _chosenProjector = @"_wuxga_sxga";
-            break;
-        case 4:
-            _projGrid = _wuxga_hd;
-            _chosenProjector = @"_wuxga_hd";
-            break;
-        case 5:
-            _projGrid = _wuxga_wuxga;
-            _chosenProjector = @"_wuxga_wuxga";
-            break;
-        default:
-            _projGrid = _sxga_sxga;
-            _chosenProjector = @"_sxga_sxga";
-            break;
-    }
-}
-
+    
+    if ([_panelSize isEqualToString:@"WUXGA"]){
+        switch (comboBoxIndex) {
+            case 0:
+                _projGrid = _wuxga_sxga;
+                _chosenProjector = @"_wuxga_sxga";
+                break;
+            case 1:
+                _projGrid = _wuxga_hd;
+                _chosenProjector = @"_wuxga_hd";
+                break;
+            case 2:
+                _projGrid = _wuxga_wuxga;
+                _chosenProjector = @"_wuxga_wuxga";
+                break;
+            default:
+                break;
+        }
+        }else if ([_panelSize isEqualToString:@"HD"]){
+            switch (comboBoxIndex) {
+                case 0:
+                    _projGrid = _hd_sxga;
+                    _chosenProjector = @"_hd_sxga";
+                    break;
+                case 1:
+                    _projGrid = _hd_hd;
+                    _chosenProjector = @"_hd_hd";
+                default:
+                    break;
+            }
+            } else if ( [_panelSize isEqualToString:@"SXGA"]){
+                switch (comboBoxIndex) {
+                    case 0:
+                        _projGrid = _sxga_sxga;
+                         _chosenProjector = @"_sxga_sxga";
+                        break;
+                    default:
+                        break;
+                }
+                } else {
+                    NSLog(@"WhatGridFault");
+                }
+            }
 //Close window
 - (IBAction)closeAction:(id)sender {
     [self close];
@@ -572,16 +591,32 @@
     
     _hasProjectorBeenChecked = 1;
     [_zapOutlet setEnabled:YES];
+    
     if ([panelRes isEqualToString:@"1200"]) {
         [_checkedLabel setTextColor:[NSColor greenColor]];
         [_checkedLabel setStringValue:@"WUXGA"];
         _availableProjectors = [NSMutableArray arrayWithObjects:_wuxga_sxga,_wuxga_hd,_wuxga_wuxga, nil];
+        [SGCDataSource setGridItems: _wuxgaAvailable];
+        [_gridComboBox reloadData];
+        [_gridComboBox selectItemAtIndex:0];
+        [_checkOutlet setEnabled:YES];
+        _panelSize = @"WUXGA";
     } else if ([panelRes isEqualToString:@"1080"]){
         [_checkedLabel setTextColor:[NSColor greenColor]];
         [_checkedLabel setStringValue:@"HD"];
+        _availableProjectors = [NSMutableArray arrayWithObjects:_hd_sxga,_hd_sxga, nil];
+        [SGCDataSource setGridItems:_hdAvailable];
+        [_gridComboBox reloadData];
+        [_checkOutlet setEnabled:YES];
+        _panelSize = @"HD";
     } else if ([panelRes isEqualToString:@"1050"]){
         [_checkedLabel setTextColor:[NSColor greenColor]];
         [_checkedLabel setStringValue:@"SXGA"];
+        _availableProjectors = [NSMutableArray arrayWithObjects:_hd_sxga,_hd_sxga, nil];
+        [SGCDataSource setGridItems:_hdAvailable];
+        [_gridComboBox reloadData];
+        [_checkOutlet setEnabled:YES];
+        _panelSize = @"SXGA";
     } else {
         NSLog(@"Swing and a miss...");
     }
@@ -591,7 +626,6 @@
 //Full IP Check method. Returns 1 if Happy 0 if Sad
 -(int) checkIPAdress {
     
-    eveythingsOk = 1;
     if (![_ipAddress  isEqual: @""]){
         
     } else {
@@ -628,7 +662,7 @@
     while (_pingReadout == nil){
         [[NSRunLoop currentRunLoop]runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
-    
+    [NSThread sleepForTimeInterval:0.05f];
     [self checkPingReadout];
     
     
@@ -641,17 +675,21 @@
     if ([_pingReadout  isEqual: @"SUCCESS"]){
         NSLog(@"Ping Success %@", _ipAddress);
     } else if ([_pingReadout  isEqual: @"FAIL"]){
-        eveythingsOk = 0;
         NSLog(@"Ping Fail %@", _ipAddress);
-        /*NSString *missingHost = [NSString stringWithFormat:@"Host not found at IP:%@", _ipAddress];
-        UIAlertView *missingHostAlert = [[UIAlertView alloc]
-                                         initWithTitle:@"Host Not Found"
-                                         message:missingHost
-                                         delegate:nil
-                                         cancelButtonTitle:@"Continue"
-                                         otherButtonTitles:nil];
-        [missingHostAlert show]; */
+        NSAlert *ipAlert = [[NSAlert alloc]init];
+        [ipAlert setMessageText:@"Can not reach IP"];
+        [ipAlert addButtonWithTitle:@"Bad Times"];
+        [ipAlert runModal];
         
+        [inputStream close];
+        [outputStream close];
+        
+        [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+        
+        [_checkedLabel setStringValue:@"FAIL"];
+        
+        NSLog(@"RUN checkPingReadout");
     }
     
     

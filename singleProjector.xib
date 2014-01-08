@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="SingleProjectorWindowController">
             <connections>
+                <outlet property="checkOutlet" destination="yon-HU-oYF" id="4Rg-yG-9tA"/>
                 <outlet property="checkedLabel" destination="jjw-6v-x87" id="McT-0x-zMR"/>
                 <outlet property="colourComboBox" destination="mIh-Wl-ETv" id="p0f-kw-brZ"/>
                 <outlet property="drawOnSegment" destination="907-SP-cuv" id="14l-UL-l6p"/>
