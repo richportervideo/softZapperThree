@@ -343,9 +343,7 @@
         [self sendThisMessage:@"(UTP5 "];
         [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:0] integerValue]+(i * _gridsize))]];
         [self sendThisMessage:@" "];
-        [self sendThisMessage
-         
-         :([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
+        [self sendThisMessage:([NSString stringWithFormat:@"%ld",(long)[[_projGrid objectAtIndex:1] integerValue]])];
         [self sendThisMessage:@" "];
         [self sendThisMessage:[NSString stringWithFormat:@"%d",([[_projGrid objectAtIndex:0] integerValue]+(i * _gridsize))]];
         [self sendThisMessage:@" "];
