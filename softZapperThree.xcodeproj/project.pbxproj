@@ -26,6 +26,8 @@
 		9BA9C064187C3BDA0064F0B0 /* SGridComboDS.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C063187C3BDA0064F0B0 /* SGridComboDS.m */; };
 		9BA9C069187C58ED0064F0B0 /* SimplePing.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C066187C58ED0064F0B0 /* SimplePing.m */; };
 		9BA9C06A187C58ED0064F0B0 /* SimplePingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BA9C068187C58ED0064F0B0 /* SimplePingHelper.m */; };
+		9BCC7A1C188583580069A668 /* Projector.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC7A1B188583580069A668 /* Projector.m */; };
+		9BCC7A1F188583660069A668 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCC7A1E188583660069A668 /* TableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,6 +74,10 @@
 		9BA9C066187C58ED0064F0B0 /* SimplePing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePing.m; sourceTree = "<group>"; };
 		9BA9C067187C58ED0064F0B0 /* SimplePingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimplePingHelper.h; sourceTree = "<group>"; };
 		9BA9C068187C58ED0064F0B0 /* SimplePingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimplePingHelper.m; sourceTree = "<group>"; };
+		9BCC7A1A188583580069A668 /* Projector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Projector.h; sourceTree = "<group>"; };
+		9BCC7A1B188583580069A668 /* Projector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Projector.m; sourceTree = "<group>"; };
+		9BCC7A1D188583660069A668 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		9BCC7A1E188583660069A668 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +147,10 @@
 				9B8D4009187BFF4F00F16964 /* AppDelegate.m */,
 				9B8D400B187BFF4F00F16964 /* MainMenu.xib */,
 				9BA9C057187C0B9F0064F0B0 /* multiProjector.xib */,
+				9BCC7A1A188583580069A668 /* Projector.h */,
+				9BCC7A1B188583580069A668 /* Projector.m */,
+				9BCC7A1D188583660069A668 /* TableViewController.h */,
+				9BCC7A1E188583660069A668 /* TableViewController.m */,
 				9BA9C059187C0BB40064F0B0 /* MultiProjectorWindowController.h */,
 				9BA9C05A187C0BB40064F0B0 /* MultiProjectorWindowController.m */,
 				9BA9C052187C066E0064F0B0 /* singleProjector.xib */,
@@ -293,9 +303,11 @@
 				9BA9C05B187C0BB40064F0B0 /* MultiProjectorWindowController.m in Sources */,
 				9BA9C064187C3BDA0064F0B0 /* SGridComboDS.m in Sources */,
 				9BA9C056187C06A80064F0B0 /* SingleProjectorWindowController.m in Sources */,
+				9BCC7A1F188583660069A668 /* TableViewController.m in Sources */,
 				9BA9C061187C2CB80064F0B0 /* SColourComboDS.m in Sources */,
 				9B8D400A187BFF4F00F16964 /* AppDelegate.m in Sources */,
 				9BA9C06A187C58ED0064F0B0 /* SimplePingHelper.m in Sources */,
+				9BCC7A1C188583580069A668 /* Projector.m in Sources */,
 				9BA9C069187C58ED0064F0B0 /* SimplePing.m in Sources */,
 				9B8D4003187BFF4F00F16964 /* main.m in Sources */,
 			);
