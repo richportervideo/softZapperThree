@@ -13,6 +13,7 @@
 @private NSArray *wuAvailable;
 @private NSArray *hdAvailable;
 @private NSArray *sxgaAvailable;
+@private NSArray *colours;
     
 }
 
@@ -21,4 +22,6 @@
 @property (weak) IBOutlet NSTextField *ipAddressTextField;
 
 - (IBAction)addProjector:(id)sender;
+- (IBAction)removeProjector:(id)sender;
+
 @end

@@ -13,6 +13,7 @@
 @property NSString *ipAddress;
 @property NSString *pType;
 @property NSComboBoxCell *gType;
+@property NSComboBoxCell *colour;
 @property NSButtonCell *zap;
 
 

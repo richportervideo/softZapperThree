@@ -14,14 +14,14 @@
         <window title="Multi-Projector" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" wantsToBeColor="NO" animationBehavior="default" id="1" userLabel="MultiProjector">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="196" y="240" width="521" height="592"/>
+            <rect key="contentRect" x="196" y="240" width="655" height="592"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1920" height="1178"/>
             <view key="contentView" id="2">
-                <rect key="frame" x="0.0" y="0.0" width="521" height="592"/>
+                <rect key="frame" x="0.0" y="0.0" width="655" height="592"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HHG-1B-gVH">
-                        <rect key="frame" x="433" y="13" width="74" height="32"/>
+                        <rect key="frame" x="567" y="13" width="74" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Close" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="uEK-Rr-wdx">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -32,10 +32,10 @@
                         </connections>
                     </button>
                     <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Eww-iV-bs4">
-                        <rect key="frame" x="20" y="522" width="96" height="22"/>
+                        <rect key="frame" x="20" y="522" width="165" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="96" id="NAt-aQ-Fnq"/>
+                            <constraint firstAttribute="width" constant="165" id="NAt-aQ-Fnq"/>
                         </constraints>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1iR-hP-IVW">
                             <font key="font" metaFont="system"/>
@@ -53,7 +53,7 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="niZ-nn-s0V">
-                        <rect key="frame" x="125" y="516" width="126" height="32"/>
+                        <rect key="frame" x="187" y="516" width="126" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Add Projector" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4fa-XJ-ffM">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -63,22 +63,33 @@
                             <action selector="addProjector:" target="GrO-bM-ViV" id="Rc0-g8-0tf"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qak-Kc-4Xx">
+                        <rect key="frame" x="313" y="516" width="151" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Remove Projector" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="3qx-xG-jSw">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                            <connections>
+                                <action selector="removeProjector:" target="GrO-bM-ViV" id="iph-Hf-BtA"/>
+                            </connections>
+                        </buttonCell>
+                    </button>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="25" horizontalPageScroll="10" verticalLineScroll="25" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7sC-GC-EVR">
-                        <rect key="frame" x="20" y="230" width="481" height="284"/>
+                        <rect key="frame" x="20" y="230" width="615" height="284"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <clipView key="contentView" id="Aqr-jm-BfA">
-                            <rect key="frame" x="1" y="17" width="479" height="266"/>
+                            <rect key="frame" x="1" y="17" width="613" height="266"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" headerView="Pve-ZU-hnx" id="5dc-LD-EXz">
-                                    <rect key="frame" x="0.0" y="0.0" width="479" height="266"/>
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" headerView="Pve-ZU-hnx" id="5dc-LD-EXz">
+                                    <rect key="frame" x="0.0" y="0.0" width="613" height="266"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="3"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <tableViewGridLines key="gridStyleMask" vertical="YES" dashed="YES"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="ipAddress" width="166.08203125" minWidth="40" maxWidth="1000" id="h0W-Gd-BLq">
+                                        <tableColumn identifier="ipAddress" width="132.6796875" minWidth="40" maxWidth="1000" id="h0W-Gd-BLq">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="IP Address">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -91,7 +102,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="pType" width="120.0546875" minWidth="40" maxWidth="1000" id="zKv-6w-fVg">
+                                        <tableColumn identifier="pType" width="90.94921875" minWidth="40" maxWidth="1000" id="zKv-6w-fVg">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Projector Type">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -117,7 +128,20 @@
                                             </comboBoxCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="zap" width="74.95703125" minWidth="10" maxWidth="3.4028234663852886e+38" id="mk1-CV-YRM">
+                                        <tableColumn identifier="colour" width="163.9140625" minWidth="10" maxWidth="3.4028234663852886e+38" id="SKr-sr-Ueg">
+                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Colour">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
+                                            </tableHeaderCell>
+                                            <comboBoxCell key="dataCell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" buttonBordered="NO" completes="NO" numberOfVisibleItems="5" id="F7R-sC-akm">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </comboBoxCell>
+                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
+                                        </tableColumn>
+                                        <tableColumn identifier="zap" width="104.95703125" minWidth="10" maxWidth="3.4028234663852886e+38" id="mk1-CV-YRM">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Zap">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -138,7 +162,7 @@
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="gMr-it-9CY">
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="gMr-it-9CY">
                             <rect key="frame" x="1" y="268" width="479" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -147,7 +171,7 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <tableHeaderView key="headerView" id="Pve-ZU-hnx">
-                            <rect key="frame" x="0.0" y="0.0" width="479" height="17"/>
+                            <rect key="frame" x="0.0" y="0.0" width="613" height="17"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
@@ -202,7 +226,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="dUj-T2-5n3" firstAttribute="leading" secondItem="foq-Dz-bt0" secondAttribute="leading" id="063-4G-yyd"/>
-                    <constraint firstItem="niZ-nn-s0V" firstAttribute="leading" secondItem="Eww-iV-bs4" secondAttribute="trailing" constant="15" id="1MU-tb-3Ue"/>
+                    <constraint firstItem="niZ-nn-s0V" firstAttribute="leading" secondItem="Eww-iV-bs4" secondAttribute="trailing" constant="8" id="1MU-tb-3Ue"/>
                     <constraint firstItem="foq-Dz-bt0" firstAttribute="top" secondItem="nJb-Ly-TWx" secondAttribute="bottom" constant="8" symbolic="YES" id="3xh-ns-8Wi"/>
                     <constraint firstAttribute="trailing" secondItem="7sC-GC-EVR" secondAttribute="trailing" constant="20" symbolic="YES" id="4Es-R9-Loz"/>
                     <constraint firstItem="l05-jW-jWS" firstAttribute="trailing" secondItem="foq-Dz-bt0" secondAttribute="trailing" id="4TD-bu-e26"/>

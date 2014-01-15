@@ -16,6 +16,7 @@
         _ipAddress = @"192.168.18.10";
         _pType = @"WUXGA";
         _gType = [[NSComboBoxCell alloc]init];
+        _colour = [[NSComboBoxCell alloc]init];
         _zap = [[NSButtonCell alloc]init];
     }
     return self;
