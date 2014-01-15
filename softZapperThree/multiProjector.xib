@@ -89,7 +89,7 @@
                                     <tableViewGridLines key="gridStyleMask" vertical="YES" dashed="YES"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
-                                        <tableColumn identifier="ipAddress" width="132.6796875" minWidth="40" maxWidth="1000" id="h0W-Gd-BLq">
+                                        <tableColumn identifier="ipAddress" width="142.5859375" minWidth="40" maxWidth="1000" id="h0W-Gd-BLq">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="IP Address">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -102,7 +102,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="pType" width="90.94921875" minWidth="40" maxWidth="1000" id="zKv-6w-fVg">
+                                        <tableColumn identifier="pType" width="89" minWidth="40" maxWidth="1000" id="zKv-6w-fVg">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Projector Type">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -115,7 +115,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="gType" width="105.1328125" minWidth="10" maxWidth="3.4028234663852886e+38" id="XSI-kK-o47">
+                                        <tableColumn identifier="gType" width="137.07421875" minWidth="10" maxWidth="3.4028234663852886e+38" id="XSI-kK-o47">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Grid Type">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -128,7 +128,7 @@
                                             </comboBoxCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="colour" width="163.9140625" minWidth="10" maxWidth="3.4028234663852886e+38" id="SKr-sr-Ueg">
+                                        <tableColumn identifier="colour" width="135.921875" minWidth="10" maxWidth="3.4028234663852886e+38" id="SKr-sr-Ueg">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Colour">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -141,17 +141,16 @@
                                             </comboBoxCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
-                                        <tableColumn identifier="zap" width="104.95703125" minWidth="10" maxWidth="3.4028234663852886e+38" id="mk1-CV-YRM">
+                                        <tableColumn identifier="zap" width="93.03515625" minWidth="10" maxWidth="3.4028234663852886e+38" id="mk1-CV-YRM">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="Zap">
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
-                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="center" title="Text Cell" id="McP-tP-2OD">
+                                            <buttonCell key="dataCell" type="push" title="Zap!" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="abo-yG-B0m">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
+                                            </buttonCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         </tableColumn>
                                     </tableColumns>
@@ -162,8 +161,8 @@
                             </subviews>
                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                         </clipView>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="YES" id="gMr-it-9CY">
-                            <rect key="frame" x="1" y="268" width="479" height="15"/>
+                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="gMr-it-9CY">
+                            <rect key="frame" x="1" y="268" width="613" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="fAH-J3-YvV">

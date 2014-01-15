@@ -12,7 +12,10 @@
 
 -(NSInteger)checkIPAddress: (NSString*)theAdress{
     
+     
+    
     if (theAdress == NULL) {
+        NSLog(@"IP VALUE IS EMPTY");
         return 0;
     } else {
         

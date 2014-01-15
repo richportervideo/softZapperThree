@@ -97,6 +97,7 @@
 
 - (IBAction)removeProjector:(id)sender {
     NSInteger row = [_tableView selectedRow];
+    [_tableView abortEditing];
     if (row !=-1) {
         [_list removeObjectAtIndex:row];
         [_tableView reloadData];
