@@ -11,12 +11,14 @@
 @implementation Projector
 
 -(id)init{
-    self [super init];
+    self = [super init];
     if (self){
-        _ipAdress = @"192.168.18.10";
+        _ipAddress = @"192.168.18.10";
         _pType = @"WUXGA";
-        _gType = @"";
+        _gType = [[NSComboBoxCell alloc]init];
+        _zap = [[NSButtonCell alloc]init];
     }
+    return self;
 }
 
 @end

@@ -10,10 +10,10 @@
 
 @interface Projector : NSObject
 
-@property NSString *ipAdress;
+@property NSString *ipAddress;
 @property NSString *pType;
-@property NSString *gType;
-@property NSString *zap;
+@property NSComboBoxCell *gType;
+@property NSButtonCell *zap;
 
 
 @end

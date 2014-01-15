@@ -34,4 +34,5 @@
     [self close];
     NSLog(@"Closing self");
 }
+
 @end

@@ -8,9 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TableViewController : NSObject
+@interface TableViewController : NSObject <NSTableViewDataSource> {
+    
+@private NSArray *wuAvailable;
+@private NSArray *hdAvailable;
+@private NSArray *sxgaAvailable;
+    
+}
 
 @property IBOutlet NSTableView *tableView;
 @property NSMutableArray *list;
+@property (weak) IBOutlet NSTextField *ipAddressTextField;
 
+- (IBAction)addProjector:(id)sender;
 @end
