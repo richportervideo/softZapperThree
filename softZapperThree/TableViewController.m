@@ -68,7 +68,9 @@
     IPChecker *IPC = [[IPChecker alloc]init];
     NSInteger isIPOk = [IPC checkIPAddress:[_ipAddressTextField stringValue]];
     
+    //Right - Good IP Address. Lets work out what kind of projector we have. 
     
+    //if projector passes IP test add it to the Table View
     if (isIPOk == 1){
     //Create projector object for the row
     Projector *p = [[Projector alloc]init];

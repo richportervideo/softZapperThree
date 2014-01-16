@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface IPChecker : NSObject
+@interface IPChecker : NSObject<NSStreamDelegate>{
+    NSInputStream *inputStream;
+    NSOutputStream *outputStream;
+}
 
 @property NSString *theAddress;
+@property NSString *pingReadout;
 
 -(NSInteger)checkIPAddress:(NSString*)theAddress;
+
 
 @end
