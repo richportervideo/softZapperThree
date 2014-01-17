@@ -44,12 +44,34 @@
             [NSThread sleepForTimeInterval:0.05f];
             NSInteger pingChecked = [self checkPingReadout];
             if (pingChecked ==0) {
+                
+                [inputStream close];
+                [outputStream close];
+                
+                [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+                [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+                
                 return 0;
+
             } else {
+                [inputStream close];
+                [outputStream close];
+                
+                [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+                [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+
                 return 1;
+                
             }
     
         } else {
+            
+            [inputStream close];
+            [outputStream close];
+            
+            [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            
             return 0;
         }
         
@@ -155,7 +177,7 @@
         [inputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         [outputStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
         
-        NSLog(@"RAN checkPingReadout");
+        // NSLog(@"RAN checkPingReadout");
         return 0;
     } else {
         return 0;

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ProjectorTypeCheck.h"
 
 @interface TableViewController : NSObject <NSTableViewDataSource> {
     
@@ -14,6 +15,7 @@
 @private NSArray *hdAvailable;
 @private NSArray *sxgaAvailable;
 @private NSArray *colours;
+    ProjectorTypeCheck *PTC;
     
 }
 
@@ -23,5 +25,6 @@
 
 - (IBAction)addProjector:(id)sender;
 - (IBAction)removeProjector:(id)sender;
+- (IBAction)testCheck:(id)sender;
 
 @end

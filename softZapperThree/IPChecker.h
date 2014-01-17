@@ -17,6 +17,8 @@
 @property NSString *pingReadout;
 
 -(NSInteger)checkIPAddress:(NSString*)theAddress;
+-(void)initNetworkCommunication;
+-(void)sendThisMessage:(NSString*)message;
 
 
 @end

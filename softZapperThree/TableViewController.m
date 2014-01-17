@@ -9,6 +9,7 @@
 #import "TableViewController.h"
 #import "Projector.h"
 #import "IPChecker.h"
+#import "ProjectorTypeCheck.h"
 
 
 @implementation TableViewController
@@ -22,6 +23,7 @@
         sxgaAvailable = [[NSArray alloc] initWithObjects: @"SXGA", nil];
         colours = [[NSArray alloc]initWithObjects:@"Red", @"Green", @"Blue", @"Cyan", @"Magenta", @"Yellow",@"White", nil];
         
+        PTC = [[ProjectorTypeCheck alloc]init];
            
     }
     
@@ -64,20 +66,27 @@
 
 - (IBAction)addProjector:(id)sender {
     
+    
     //Setup an IP Checker for Use
     IPChecker *IPC = [[IPChecker alloc]init];
     NSInteger isIPOk = [IPC checkIPAddress:[_ipAddressTextField stringValue]];
     
-    //Right - Good IP Address. Lets work out what kind of projector we have. 
+    
+    //Right - Good IP Address. Lets work out what kind of projector we have.
+    NSString *thePTC = [PTC doTheCheck:[_ipAddressTextField stringValue]];
+    NSString *testedProjectorPanel = [PTC thePanelRes];
     
     //if projector passes IP test add it to the Table View
-    if (isIPOk == 1){
+    NSLog(@"thePTC %@", thePTC);
+    
+    if ((isIPOk == 1)&&([thePTC isEqualToString:(@"Done")]))    {
     //Create projector object for the row
     Projector *p = [[Projector alloc]init];
     //Set the ipAddress to the ip in the texfield.
     [p setIpAddress:[_ipAddressTextField stringValue]];
     NSComboBoxCell *n = [[NSComboBoxCell alloc]init];
     NSComboBoxCell *col = [[NSComboBoxCell alloc]init];
+    [p setPType:@"String"];
     [n addItemsWithObjectValues:wuAvailable];
     [n selectItemAtIndex:0];
     [col addItemsWithObjectValues:colours];
@@ -105,5 +114,11 @@
         [_tableView reloadData];
     }
 
+}
+
+- (IBAction)testCheck:(id)sender {
+    
+
+    
 }
 @end
