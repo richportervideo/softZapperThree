@@ -27,7 +27,7 @@
     if (_thePanelRes != nil) {
         return _thePanelRes;
     } else {
-        return @"NotDone";
+        return @"CheckFailed";
     }
 }
 
